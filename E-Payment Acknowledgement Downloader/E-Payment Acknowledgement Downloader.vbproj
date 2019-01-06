@@ -79,6 +79,8 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\CustomWebDriver.vb" />
+    <Compile Include="Classes\URLs.vb" />
     <Compile Include="frm_Main.Designer.vb">
       <DependentUpon>frm_Main.vb</DependentUpon>
     </Compile>

@@ -33,6 +33,7 @@ Partial Class frm_Main
         Me.lbl_To = New DevExpress.XtraEditors.LabelControl()
         Me.table_Serial = New System.Windows.Forms.TableLayoutPanel()
         Me.txt_Serial_To = New DevExpress.XtraEditors.SpinEdit()
+        Me.DownloadWorker = New System.ComponentModel.BackgroundWorker()
         CType(Me.txt_Username.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txt_Password.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.chk_SavePassword.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -188,4 +189,5 @@ Partial Class frm_Main
     Friend WithEvents lbl_To As DevExpress.XtraEditors.LabelControl
     Friend WithEvents table_Serial As TableLayoutPanel
     Friend WithEvents txt_Serial_To As DevExpress.XtraEditors.SpinEdit
+    Friend WithEvents DownloadWorker As System.ComponentModel.BackgroundWorker
 End Class
