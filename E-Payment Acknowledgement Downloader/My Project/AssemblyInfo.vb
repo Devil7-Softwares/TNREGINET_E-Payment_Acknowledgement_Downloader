@@ -9,10 +9,10 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("E-Payment Acknowledgement Downloader")>
-<Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("E-Payment Acknowledgement Downloader")>
-<Assembly: AssemblyCopyright("Copyright ©  2019")>
+<Assembly: AssemblyDescription("Simple tool to download E-Payment Acknowledgement from TNREGINET Website")>
+<Assembly: AssemblyCompany("Devil7 Softwares")>
+<Assembly: AssemblyProduct("Devil7 Automation")>
+<Assembly: AssemblyCopyright("Copyright © Devil7 Softwares 2019")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>

@@ -22,6 +22,7 @@ Partial Class frm_Main
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frm_Main))
         Me.lbl_Username = New DevExpress.XtraEditors.LabelControl()
         Me.lbl_Password = New DevExpress.XtraEditors.LabelControl()
         Me.txt_Username = New DevExpress.XtraEditors.TextEdit()
@@ -207,6 +208,7 @@ Partial Class frm_Main
         Me.Controls.Add(Me.lbl_Password)
         Me.Controls.Add(Me.lbl_Username)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "frm_Main"
         Me.Text = "TNREGINET: E-Payment Acknowledgement Downloader"

@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{9EDE7B36-9B5A-4AB2-A365-50F980028732}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>E_Payment_Acknowledgement_Downloader.My.MyApplication</StartupObject>
-    <RootNamespace>E_Payment_Acknowledgement_Downloader</RootNamespace>
+    <StartupObject>Devil7.Automation.AckDownloader.My.MyApplication</StartupObject>
+    <RootNamespace>Devil7.Automation.AckDownloader</RootNamespace>
     <AssemblyName>E-Payment Acknowledgement Downloader</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
@@ -47,6 +47,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.Data.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
@@ -139,6 +142,7 @@
     <Content Include="Drivers\x86\geckodriver.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
