@@ -61,7 +61,7 @@ Public Class frm_Main
 
             btn_Start.Enabled = False
 
-            Location = New Point(My.Computer.Screen.WorkingArea.Width - Width, My.Computer.Screen.WorkingArea.Height - Height)
+            Location = New Point(0, My.Computer.Screen.WorkingArea.Height - Height)
             TopMost = True
         End If
     End Sub
