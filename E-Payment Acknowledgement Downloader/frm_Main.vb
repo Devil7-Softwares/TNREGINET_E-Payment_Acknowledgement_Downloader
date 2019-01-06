@@ -80,6 +80,10 @@ Public Class frm_Main
             My.Settings.Save()
         End If
     End Sub
+
+    Private Sub btn_About_Click(sender As Object, e As EventArgs) Handles btn_About.Click
+        frm_About.Show()
+    End Sub
 #End Region
 
 #Region "Other Events"
@@ -137,6 +141,14 @@ Public Class frm_Main
             txt_Console.SelectionColor = Color
             txt_Console.AppendText(Message)
             PostMessage(txt_Console.Handle, WM_VSCROLL, CType(SB_BOTTOM, IntPtr), CType(IntPtr.Zero, IntPtr))
+        End If
+    End Sub
+
+    Private Sub frm_Main_Shown(sender As Object, e As EventArgs) Handles Me.Shown
+        If My.Settings.FirstRun Then
+            frm_About.Show()
+            My.Settings.FirstRun = False
+            My.Settings.Save()
         End If
     End Sub
 #End Region

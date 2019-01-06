@@ -39,6 +39,7 @@ Partial Class frm_Main
         Me.lbl_DownloadLocation = New DevExpress.XtraEditors.LabelControl()
         Me.txt_DownloadLocation = New DevExpress.XtraEditors.ButtonEdit()
         Me.dlg_SelectDownloadLocation = New System.Windows.Forms.FolderBrowserDialog()
+        Me.btn_About = New DevExpress.XtraEditors.SimpleButton()
         CType(Me.txt_Username.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txt_Password.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.chk_SavePassword.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -191,11 +192,20 @@ Partial Class frm_Main
         Me.txt_DownloadLocation.Size = New System.Drawing.Size(269, 20)
         Me.txt_DownloadLocation.TabIndex = 12
         '
+        'btn_About
+        '
+        Me.btn_About.Location = New System.Drawing.Point(12, 147)
+        Me.btn_About.Name = "btn_About"
+        Me.btn_About.Size = New System.Drawing.Size(75, 23)
+        Me.btn_About.TabIndex = 13
+        Me.btn_About.Text = "About"
+        '
         'frm_Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(396, 284)
+        Me.Controls.Add(Me.btn_About)
         Me.Controls.Add(Me.txt_DownloadLocation)
         Me.Controls.Add(Me.lbl_DownloadLocation)
         Me.Controls.Add(Me.txt_Console)
@@ -241,4 +251,5 @@ Partial Class frm_Main
     Friend WithEvents lbl_DownloadLocation As DevExpress.XtraEditors.LabelControl
     Friend WithEvents txt_DownloadLocation As DevExpress.XtraEditors.ButtonEdit
     Friend WithEvents dlg_SelectDownloadLocation As FolderBrowserDialog
+    Friend WithEvents btn_About As DevExpress.XtraEditors.SimpleButton
 End Class
