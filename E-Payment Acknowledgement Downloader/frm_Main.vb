@@ -112,6 +112,8 @@ Public Class frm_Main
         Driver.Logout()
 
         EnableControls()
+
+        Invoke(Sub() MsgBox("Process Completed.", MsgBoxStyle.Information + MsgBoxStyle.OkOnly, "Done"))
     End Sub
 
     Private Sub frm_Main_Load(sender As Object, e As EventArgs) Handles Me.Load
