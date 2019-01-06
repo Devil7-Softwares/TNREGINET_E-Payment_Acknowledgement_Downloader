@@ -84,6 +84,7 @@ Public Class frm_Main
         DisableControls()
 
         Dim Driver As New CustomWebDriver
+        AddHandler Driver.ReportStatus, AddressOf ReportStatus
         If Not Driver.Login(txt_Username.Text, txt_Password.Text) Then Exit Sub
 
         For ID As Integer = txt_Serial_From.Value To txt_Serial_To.Value
@@ -106,6 +107,16 @@ Public Class frm_Main
     Private Sub chk_SavePassword_CheckedChanged(sender As Object, e As EventArgs) Handles chk_SavePassword.CheckedChanged
         My.Settings.saveusername = chk_SavePassword.Checked
         My.Settings.Save()
+    End Sub
+
+    Private Sub ReportStatus(ByVal Message As String, ByVal Color As Color)
+        If InvokeRequired Then
+            Invoke(Sub() ReportStatus(Message, Color))
+        Else
+            txt_Console.SelectionColor = Color
+            txt_Console.AppendText(Message)
+            PostMessage(txt_Console.Handle, WM_VSCROLL, CType(SB_BOTTOM, IntPtr), CType(IntPtr.Zero, IntPtr))
+        End If
     End Sub
 #End Region
 

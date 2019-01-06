@@ -29,12 +29,17 @@ Public Class CustomWebDriver
     Dim WebDriver As FirefoxDriver
 #End Region
 
+#Region "Events"
+    Public Event ReportStatus(ByVal Message As String, ByVal Color As Color)
+#End Region
+
 #Region "Private Subs & Functions"
     Private Function GetDriverPath() As String
         Return IO.Path.Combine(Application.StartupPath, "Drivers", If(Environment.Is64BitOperatingSystem, "x64", "x86"))
     End Function
 
     Private Function StartDriver() As Boolean
+        RaiseEvent ReportStatus("Starting/Restarting Firefox Driver..." & vbNewLine, Color.Green)
         Dim DownloadDir As String = My.Computer.FileSystem.SpecialDirectories.Desktop
         If WebDriver IsNot Nothing Then
             Try
@@ -65,6 +70,7 @@ Public Class CustomWebDriver
     End Function
 
     Private Sub WaitForLoad()
+        RaiseEvent ReportStatus("Waiting for page to load..." & vbNewLine, Color.Yellow)
         On Error Resume Next
         WebDriver.Manage.Timeouts.ImplicitWait = New TimeSpan(0, 0, 5)
         Dim wait As WebDriverWait = New WebDriverWait(WebDriver, New TimeSpan(10000))
@@ -81,40 +87,53 @@ Public Class CustomWebDriver
     End Function
 
     Private Function ClickByTitle(ByVal Title As String)
+        RaiseEvent ReportStatus("Searching for element with Title: " & Title & "... ", Color.Yellow)
         For Each i As IWebElement In WebDriver.FindElementsByTagName("a")
             If i.GetAttribute("title") = Title Then
+                RaiseEvent ReportStatus("Found." & vbNewLine, Color.Green)
                 i.Click()
                 Return True
             End If
         Next
+        RaiseEvent ReportStatus("Not Found!" & vbNewLine, Color.Red)
         Return False
     End Function
 
     Private Function PrintAcknowledgement(ByVal ID As Integer) As Boolean
+        RaiseEvent ReportStatus("Searching for select button for ID: " & ID & " ", Color.Yellow)
         Dim SelectBtn As IWebElement = WebDriver.FindElementById(String.Format("rdPayment{0}", ID))
         If SelectBtn IsNot Nothing Then
+            RaiseEvent ReportStatus("Found. Selecting..." & vbNewLine, Color.Green)
             SelectBtn.Click()
         Else
+            RaiseEvent ReportStatus("Not Found!" & vbNewLine, Color.Red)
             Return False
         End If
 
+        RaiseEvent ReportStatus("Searching for submit button for ID: " & ID & " ", Color.Yellow)
         Dim SubmitBtn As IWebElement = WebDriver.FindElementById("SubmitData")
         If SubmitBtn IsNot Nothing Then
             If SubmitBtn.GetAttribute("class") = "button_disabled" Then
+                RaiseEvent ReportStatus("Found... But Disabled." & vbNewLine, Color.Blue)
                 Return False
             Else
+                RaiseEvent ReportStatus("Found. Submitting..." & vbNewLine, Color.Green)
                 SubmitBtn.Click()
                 WaitForLoad()
             End If
         Else
+            RaiseEvent ReportStatus("Not Found!" & vbNewLine, Color.Red)
             Return False
         End If
 
-        Threading.Thread.Sleep(1000)
+        RaiseEvent ReportStatus("Searching for download button for ID: " & ID & " ", Color.Yellow)
+        Threading.Thread.Sleep(3000)
         Dim DownloadBtn As IWebElement = WebDriver.FindElementByLinkText("Click here")
         If DownloadBtn IsNot Nothing Then
+            RaiseEvent ReportStatus("Found. Downloading..." & vbNewLine, Color.Green)
             DownloadBtn.Click()
         Else
+            RaiseEvent ReportStatus("Not Found!" & vbNewLine, Color.Red)
             Return False
         End If
         Threading.Thread.Sleep(3000)
@@ -125,6 +144,7 @@ Public Class CustomWebDriver
     Private Function NavigatePage(ByVal ID As Integer) As Boolean
         On Error Resume Next
         Dim PageNo As Integer = Math.Ceiling(ID / 10)
+        RaiseEvent ReportStatus("Navigating to page " & PageNo & " for ID: " & ID & vbNewLine, Color.Green)
         Threading.Thread.Sleep(1000)
 
 SEARCHPAGE:
@@ -159,14 +179,19 @@ SEARCHPAGE:
         StartDriver()
 
         ' Navigate to Home
+        RaiseEvent ReportStatus("Navigating to Login Page...", Color.Green)
         WebDriver.Navigate().GoToUrl(URLs.LOGIN)
         WaitForLoad()
+        RaiseEvent ReportStatus("Done." & vbNewLine, Color.Green)
 
         ' Change Language to English
+        RaiseEvent ReportStatus("Changing Language to English...", Color.Green)
         CType(WebDriver, IJavaScriptExecutor).ExecuteScript("javascript:changeLanguage('en');")
         Threading.Thread.Sleep(3000)
+        RaiseEvent ReportStatus("Done." & vbNewLine, Color.Green)
 
         ' Fill Username & Password
+        RaiseEvent ReportStatus("Filling Username & Password...", Color.Yellow)
         Dim Username_ As IWebElement = WebDriver.FindElementById("username")
         Dim Password_ As IWebElement = WebDriver.FindElementById("password")
         Dim Captcha_ As IWebElement = WebDriver.FindElementById("txt_Captcha")
@@ -174,15 +199,18 @@ SEARCHPAGE:
             Username_.SendKeys(Username)
             Password_.SendKeys(Password)
             Captcha_.Click()
+            RaiseEvent ReportStatus("Done. " & vbNewLine, Color.Green)
         Else
-            MsgBox("Unable to find username element! Aborting...", MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, "Error")
+            RaiseEvent ReportStatus("Unable to find username/password element!", Color.Red)
             Return False
         End If
 
         ' Check Whether User Entered Captcha & Successfully Logged In
+        RaiseEvent ReportStatus("Waiting for User to Enter Captcha & Login...", Color.Yellow)
         Do Until WebDriver.Url = URLs.HOME
             Application.DoEvents()
         Loop
+        RaiseEvent ReportStatus("Done. " & vbNewLine, Color.Green)
 
         Return True
     End Function
@@ -193,6 +221,7 @@ SEARCHPAGE:
         If Not ClickByTitle("Print") Then Return False
         If Not ClickByTitle("Acknowledgement") Then Return False
 
+        RaiseEvent ReportStatus("Waiting for page to load..." & vbNewLine, Color.Yellow)
         Threading.Thread.Sleep(3000)
 
         If ID <= 10 Then
@@ -204,20 +233,20 @@ SEARCHPAGE:
         Return False
     End Function
 
-    Function Logout() As Boolean
+    Sub Logout()
         On Error Resume Next
+        RaiseEvent ReportStatus("Logging out...", Color.Green)
         For Each i As IWebElement In WebDriver.FindElementsByTagName("input")
             If i.GetAttribute("value") = "Sign-out" Then
                 i.Click()
-                Return True
+                Exit For
             End If
         Next
 
         WebDriver.Close()
         WebDriver.Quit()
-
-        Return False
-    End Function
+        RaiseEvent ReportStatus("Done. " & vbNewLine, Color.Green)
+    End Sub
 #End Region
 
 End Class

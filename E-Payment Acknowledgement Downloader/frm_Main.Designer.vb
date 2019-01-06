@@ -34,6 +34,7 @@ Partial Class frm_Main
         Me.table_Serial = New System.Windows.Forms.TableLayoutPanel()
         Me.txt_Serial_To = New DevExpress.XtraEditors.SpinEdit()
         Me.DownloadWorker = New System.ComponentModel.BackgroundWorker()
+        Me.txt_Console = New System.Windows.Forms.RichTextBox()
         CType(Me.txt_Username.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txt_Password.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.chk_SavePassword.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -90,7 +91,7 @@ Partial Class frm_Main
         'btn_Start
         '
         Me.btn_Start.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btn_Start.Location = New System.Drawing.Point(309, 127)
+        Me.btn_Start.Location = New System.Drawing.Point(309, 121)
         Me.btn_Start.Name = "btn_Start"
         Me.btn_Start.Size = New System.Drawing.Size(75, 23)
         Me.btn_Start.TabIndex = 5
@@ -153,11 +154,27 @@ Partial Class frm_Main
         'DownloadWorker
         '
         '
+        'txt_Console
+        '
+        Me.txt_Console.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txt_Console.BackColor = System.Drawing.Color.Black
+        Me.txt_Console.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.txt_Console.ForeColor = System.Drawing.Color.Green
+        Me.txt_Console.Location = New System.Drawing.Point(12, 150)
+        Me.txt_Console.Name = "txt_Console"
+        Me.txt_Console.ReadOnly = True
+        Me.txt_Console.Size = New System.Drawing.Size(372, 96)
+        Me.txt_Console.TabIndex = 10
+        Me.txt_Console.Text = ""
+        '
         'frm_Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(396, 162)
+        Me.ClientSize = New System.Drawing.Size(396, 258)
+        Me.Controls.Add(Me.txt_Console)
         Me.Controls.Add(Me.table_Serial)
         Me.Controls.Add(Me.lbl_SerialNumbers)
         Me.Controls.Add(Me.btn_Start)
@@ -194,4 +211,5 @@ Partial Class frm_Main
     Friend WithEvents table_Serial As TableLayoutPanel
     Friend WithEvents txt_Serial_To As DevExpress.XtraEditors.SpinEdit
     Friend WithEvents DownloadWorker As System.ComponentModel.BackgroundWorker
+    Friend WithEvents txt_Console As RichTextBox
 End Class
