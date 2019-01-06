@@ -20,16 +20,50 @@
 '=========================================================================='
 
 Imports OpenQA.Selenium
-Imports OpenQA.Selenium.Chrome
+Imports OpenQA.Selenium.Firefox
 Imports OpenQA.Selenium.Support.UI
 
 Public Class CustomWebDriver
 
 #Region "Variables"
-    Dim WebDriver As ChromeDriver
+    Dim WebDriver As FirefoxDriver
 #End Region
 
 #Region "Private Subs & Functions"
+    Private Function GetDriverPath() As String
+        Return IO.Path.Combine(Application.StartupPath, "Drivers", If(Environment.Is64BitOperatingSystem, "x64", "x86"))
+    End Function
+
+    Private Function StartDriver() As Boolean
+        Dim DownloadDir As String = My.Computer.FileSystem.SpecialDirectories.Desktop
+        If WebDriver IsNot Nothing Then
+            Try
+                WebDriver.Close()
+            Catch ex As Exception
+
+            End Try
+        End If
+        If Not My.Computer.FileSystem.DirectoryExists(DownloadDir) Then My.Computer.FileSystem.CreateDirectory(DownloadDir)
+        Dim FirefoxOpt As New FirefoxOptions
+        FirefoxOpt.Profile = New FirefoxProfile
+        FirefoxOpt.Profile.AcceptUntrustedCertificates = True
+        FirefoxOpt.Profile.SetPreference("browser.download.folderList", 2)
+        FirefoxOpt.Profile.SetPreference("browser.download.dir", DownloadDir)
+        FirefoxOpt.Profile.SetPreference("browser.helperApps.neverAsk.saveToDisk", "application/pdf")
+        FirefoxOpt.Profile.SetPreference("plugin.disable_full_page_plugin_for_types", "application/pdf")
+        FirefoxOpt.Profile.SetPreference("pdfjs.disabled", True)
+        FirefoxOpt.AcceptInsecureCertificates = True
+
+        Dim driverservice As FirefoxDriverService = FirefoxDriverService.CreateDefaultService(GetDriverPath)
+        driverservice.HideCommandPromptWindow = True
+        Try
+            WebDriver = New FirefoxDriver(driverservice, FirefoxOpt, New TimeSpan(1, 0, 0, 0))
+            Return True
+        Catch ex As Exception
+            Return False
+        End Try
+    End Function
+
     Private Sub WaitForLoad()
         On Error Resume Next
         WebDriver.Manage.Timeouts.ImplicitWait = New TimeSpan(0, 0, 5)
@@ -121,8 +155,8 @@ SEARCHPAGE:
 
 #Region "Public Subs & Functions"
     Function Login(ByVal Username As String, ByVal Password As String) As Boolean
-        ' Start Chrome Driver
-        WebDriver = New ChromeDriver()
+        ' Start Firefox Driver
+        StartDriver()
 
         ' Navigate to Home
         WebDriver.Navigate().GoToUrl(URLs.LOGIN)
@@ -130,6 +164,7 @@ SEARCHPAGE:
 
         ' Change Language to English
         CType(WebDriver, IJavaScriptExecutor).ExecuteScript("javascript:changeLanguage('en');")
+        Threading.Thread.Sleep(3000)
 
         ' Fill Username & Password
         Dim Username_ As IWebElement = WebDriver.FindElementById("username")
@@ -178,6 +213,7 @@ SEARCHPAGE:
             End If
         Next
 
+        WebDriver.Close()
         WebDriver.Quit()
 
         Return False

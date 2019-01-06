@@ -70,7 +70,7 @@ Public Class frm_Main
             Invoke(Sub() MsgBox("Username and Password cannot be empty!", MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, "Error"))
             Exit Sub
         End If
-        EnableControls()
+        DisableControls()
 
         Dim Driver As New CustomWebDriver
         If Not Driver.Login(txt_Username.Text, txt_Password.Text) Then Exit Sub
@@ -81,7 +81,7 @@ Public Class frm_Main
 
         Driver.Logout()
 
-        DisableControls()
+        EnableControls()
     End Sub
 #End Region
 
