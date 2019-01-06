@@ -31,6 +31,8 @@ Public Class frm_Main
             txt_Username.Enabled = True
             txt_Password.Enabled = True
 
+            chk_SavePassword.Enabled = True
+
             txt_Serial_From.Enabled = True
             txt_Serial_To.Enabled = True
 
@@ -46,6 +48,8 @@ Public Class frm_Main
         Else
             txt_Username.Enabled = False
             txt_Password.Enabled = False
+
+            chk_SavePassword.Enabled = False
 
             txt_Serial_From.Enabled = False
             txt_Serial_To.Enabled = False
@@ -70,6 +74,13 @@ Public Class frm_Main
             Invoke(Sub() MsgBox("Username and Password cannot be empty!", MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, "Error"))
             Exit Sub
         End If
+
+        If My.Settings.SaveUsername Then
+            My.Settings.Username = txt_Username.Text
+            My.Settings.Password = txt_Password.Text
+            My.Settings.Save()
+        End If
+
         DisableControls()
 
         Dim Driver As New CustomWebDriver
@@ -82,6 +93,19 @@ Public Class frm_Main
         Driver.Logout()
 
         EnableControls()
+    End Sub
+
+    Private Sub frm_Main_Load(sender As Object, e As EventArgs) Handles Me.Load
+        chk_SavePassword.Checked = My.Settings.SaveUsername
+        If My.Settings.SaveUsername Then
+            txt_Username.Text = My.Settings.Username
+            txt_Password.Text = My.Settings.password
+        End If
+    End Sub
+
+    Private Sub chk_SavePassword_CheckedChanged(sender As Object, e As EventArgs) Handles chk_SavePassword.CheckedChanged
+        My.Settings.saveusername = chk_SavePassword.Checked
+        My.Settings.Save()
     End Sub
 #End Region
 
