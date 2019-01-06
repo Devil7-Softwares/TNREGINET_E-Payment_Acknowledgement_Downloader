@@ -20,6 +20,7 @@
 '=========================================================================='
 
 Imports System.ComponentModel
+Imports DevExpress.XtraEditors.Controls
 
 Public Class frm_Main
 
@@ -35,6 +36,8 @@ Public Class frm_Main
 
             txt_Serial_From.Enabled = True
             txt_Serial_To.Enabled = True
+
+            txt_DownloadLocation.Enabled = True
 
             btn_Start.Enabled = True
 
@@ -54,6 +57,8 @@ Public Class frm_Main
             txt_Serial_From.Enabled = False
             txt_Serial_To.Enabled = False
 
+            txt_DownloadLocation.Enabled = False
+
             btn_Start.Enabled = False
 
             Location = New Point(My.Computer.Screen.WorkingArea.Width - Width, My.Computer.Screen.WorkingArea.Height - Height)
@@ -65,6 +70,15 @@ Public Class frm_Main
 #Region "Button Events"
     Private Sub btn_Start_Click(sender As Object, e As EventArgs) Handles btn_Start.Click
         If Not DownloadWorker.IsBusy Then DownloadWorker.RunWorkerAsync()
+    End Sub
+
+    Private Sub txt_DownloadLocation_ButtonClick(sender As Object, e As ButtonPressedEventArgs) Handles txt_DownloadLocation.ButtonClick
+        dlg_SelectDownloadLocation.SelectedPath = txt_DownloadLocation.Text
+        If dlg_SelectDownloadLocation.ShowDialog = DialogResult.OK Then
+            txt_DownloadLocation.Text = dlg_SelectDownloadLocation.SelectedPath
+            My.Settings.DownloadLocation = dlg_SelectDownloadLocation.SelectedPath
+            My.Settings.Save()
+        End If
     End Sub
 #End Region
 
@@ -83,7 +97,7 @@ Public Class frm_Main
 
         DisableControls()
 
-        Dim Driver As New CustomWebDriver
+        Dim Driver As New CustomWebDriver(txt_DownloadLocation.Text)
         AddHandler Driver.ReportStatus, AddressOf ReportStatus
         If Not Driver.Login(txt_Username.Text, txt_Password.Text) Then Exit Sub
 
@@ -100,12 +114,19 @@ Public Class frm_Main
         chk_SavePassword.Checked = My.Settings.SaveUsername
         If My.Settings.SaveUsername Then
             txt_Username.Text = My.Settings.Username
-            txt_Password.Text = My.Settings.password
+            txt_Password.Text = My.Settings.Password
+        End If
+        If My.Settings.DownloadLocation = "" Or Not My.Computer.FileSystem.DirectoryExists(My.Settings.DownloadLocation) Then
+            txt_DownloadLocation.Text = My.Computer.FileSystem.SpecialDirectories.Desktop
+            My.Settings.DownloadLocation = My.Computer.FileSystem.SpecialDirectories.Desktop
+            My.Settings.Save()
+        Else
+            txt_DownloadLocation.Text = My.Settings.DownloadLocation
         End If
     End Sub
 
     Private Sub chk_SavePassword_CheckedChanged(sender As Object, e As EventArgs) Handles chk_SavePassword.CheckedChanged
-        My.Settings.saveusername = chk_SavePassword.Checked
+        My.Settings.SaveUsername = chk_SavePassword.Checked
         My.Settings.Save()
     End Sub
 

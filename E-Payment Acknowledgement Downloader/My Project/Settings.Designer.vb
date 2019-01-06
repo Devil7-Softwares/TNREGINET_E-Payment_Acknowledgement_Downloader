@@ -101,6 +101,18 @@ Namespace My
                 Me("Password") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property DownloadLocation() As String
+            Get
+                Return CType(Me("DownloadLocation"),String)
+            End Get
+            Set
+                Me("DownloadLocation") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

@@ -27,10 +27,17 @@ Public Class CustomWebDriver
 
 #Region "Variables"
     Dim WebDriver As FirefoxDriver
+    Dim DownloadLocation As String
 #End Region
 
 #Region "Events"
     Public Event ReportStatus(ByVal Message As String, ByVal Color As Color)
+#End Region
+
+#Region "Constructors"
+    Sub New(ByVal DownloadLocation As String)
+        Me.DownloadLocation = DownloadLocation
+    End Sub
 #End Region
 
 #Region "Private Subs & Functions"
@@ -40,7 +47,6 @@ Public Class CustomWebDriver
 
     Private Function StartDriver() As Boolean
         RaiseEvent ReportStatus("Starting/Restarting Firefox Driver..." & vbNewLine, Color.Green)
-        Dim DownloadDir As String = My.Computer.FileSystem.SpecialDirectories.Desktop
         If WebDriver IsNot Nothing Then
             Try
                 WebDriver.Close()
@@ -48,12 +54,12 @@ Public Class CustomWebDriver
 
             End Try
         End If
-        If Not My.Computer.FileSystem.DirectoryExists(DownloadDir) Then My.Computer.FileSystem.CreateDirectory(DownloadDir)
+        If Not My.Computer.FileSystem.DirectoryExists(DownloadLocation) Then My.Computer.FileSystem.CreateDirectory(DownloadLocation)
         Dim FirefoxOpt As New FirefoxOptions
         FirefoxOpt.Profile = New FirefoxProfile
         FirefoxOpt.Profile.AcceptUntrustedCertificates = True
         FirefoxOpt.Profile.SetPreference("browser.download.folderList", 2)
-        FirefoxOpt.Profile.SetPreference("browser.download.dir", DownloadDir)
+        FirefoxOpt.Profile.SetPreference("browser.download.dir", DownloadLocation)
         FirefoxOpt.Profile.SetPreference("browser.helperApps.neverAsk.saveToDisk", "application/pdf")
         FirefoxOpt.Profile.SetPreference("plugin.disable_full_page_plugin_for_types", "application/pdf")
         FirefoxOpt.Profile.SetPreference("pdfjs.disabled", True)
