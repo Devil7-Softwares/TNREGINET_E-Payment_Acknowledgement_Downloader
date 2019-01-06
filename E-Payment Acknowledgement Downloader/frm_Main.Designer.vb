@@ -73,6 +73,7 @@ Partial Class frm_Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txt_Password.Location = New System.Drawing.Point(96, 38)
         Me.txt_Password.Name = "txt_Password"
+        Me.txt_Password.Properties.UseSystemPasswordChar = True
         Me.txt_Password.Size = New System.Drawing.Size(288, 20)
         Me.txt_Password.TabIndex = 3
         '
@@ -148,6 +149,9 @@ Partial Class frm_Main
         Me.txt_Serial_To.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
         Me.txt_Serial_To.Size = New System.Drawing.Size(129, 20)
         Me.txt_Serial_To.TabIndex = 7
+        '
+        'DownloadWorker
+        '
         '
         'frm_Main
         '
